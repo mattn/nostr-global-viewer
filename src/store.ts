@@ -3,9 +3,11 @@ import { ref } from "vue";
 import * as Nostr from "nostr-tools";
 import { RelayPool } from "nostr-relaypool";
 
-export const feedRelays = ["wss://relay-jp.nostr.wirednet.jp/"];
+export const feedRelays = ["wss://nostr.compile-error.net/"];
 
 export const profileRelays = [
+  "wss://nostr.compile-error.net/",
+  "wss://cagliostr.compile-error.net/",
   "wss://bostr.nokotaro.com/",
   "wss://ipv6.nostr.wirednet.jp/",
   "wss://nos.lol/",
@@ -48,10 +50,12 @@ pool.ondisconnect((url, msg) => {
 export function normalizeUrls(urls: string[]): string[] {
   return urls.map((url) => {
     let u = url;
-    
-    if (u.startsWith("http://")) { u = u.replace("http://", "ws://"); }
-    else if (u.startsWith("https://")) { u = u.replace("https://", "wss://"); }
-    else if (!(u.startsWith("ws://") || u.startsWith("wss://"))) { u = "wss://" + u; }
+
+    if (u.startsWith("http://")) u = u.replace("http://", "ws://");
+    else if (u.startsWith("https://")) u = u.replace("https://", "wss://");
+    else if (!(u.startsWith("ws://") || u.startsWith("wss://"))) {
+      u = "wss://" + u;
+    }
 
     return Nostr.utils.normalizeURL(u);
   });
